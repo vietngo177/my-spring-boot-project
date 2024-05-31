@@ -4,13 +4,17 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+import org.springframework.cglib.SpringCglibInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import vn.vietngo.spring.myproject.dao.AccountRepository;
 import vn.vietngo.spring.myproject.entity.Account;
 import vn.vietngo.spring.myproject.service.AccountService;
+
+import java.security.Principal;
 
 @Controller
 @RequestMapping("/profile")
@@ -25,27 +29,32 @@ public class ProfileController {
         this.accountService = accountService;
     }
 
+    @GetMapping("")
+    public String profile(Model model, Principal principal){
+        Account account = accountService.getAccountByTenDangNhap(principal.getName());
+        model.addAttribute("account", account);
+        return "profile";
+    }
+
     @InitBinder
     public void initBinder(WebDataBinder data){
         StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);
         data.registerCustomEditor(String.class, stringTrimmerEditor);
     }
 
-    @GetMapping("")
-    public String profile(Model model){
-        Account account = new Account();
-        model.addAttribute("profile", account);
-        return "profile";
-    }
-
     @PostMapping("/save")
-    public String save(@Valid @ModelAttribute Account account, BindingResult result, Model model, HttpSession session){
+    public String save(@Valid @ModelAttribute Account account, BindingResult result, Model model, Principal principal){
+        Account account1 = accountService.getAccountByTenDangNhap(principal.getName());
         if(result.hasErrors()){
+            account1.setHoVaTen(account.getHoVaTen());
+            account1.setEmail(account.getEmail());
+            model.addAttribute("account", account);
             return "profile";
+        }else {
+            account1.setHoVaTen(account.getHoVaTen());
+            account1.setEmail(account.getEmail());
+            accountService.updateAccount(account1);
+            return "index";
         }
-        accountService.updateAccount(account);
-        session.setAttribute("account", account);
-        session.setAttribute("account", account);
-        return "success";
     }
 }

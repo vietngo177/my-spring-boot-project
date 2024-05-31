@@ -10,5 +10,6 @@ import java.util.List;
 
 @Repository
 public interface BookRepository extends JpaRepository<Book, Long> {
-    Book findByTenSach(String tenSach);
+    List<Book> findByTenSach(String tenSach);
+
 }

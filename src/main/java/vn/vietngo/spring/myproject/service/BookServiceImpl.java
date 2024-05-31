@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import vn.vietngo.spring.myproject.dao.BookRepository;
 import vn.vietngo.spring.myproject.entity.Book;
 
+import java.util.List;
+
 @Service
 public class BookServiceImpl implements BookService {
     private BookRepository bookRepository;
@@ -17,7 +19,17 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book getBookByTenSach(String tenSach) {
+    public List<Book> getBookByTenSach(String tenSach) {
         return bookRepository.findByTenSach(tenSach);
+    }
+
+    @Override
+    public List<Book> getAllBook() {
+        return bookRepository.findAll();
+    }
+
+    @Override
+    public Book getBookById(Long id) {
+        return bookRepository.getReferenceById(id);
     }
 }

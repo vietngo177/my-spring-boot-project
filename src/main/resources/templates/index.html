@@ -7,13 +7,13 @@
 </head>
 <body>
     <nav class="navbar bg-body-tertiary">
-        <div class="container-fluid">
+        <div class= "container-fluid" >
             <a class="navbar-brand mb-0 h1" href="index.html">Trang chủ</a>
-            <form class="d-flex" role="search">
-                <input class="form-control me-2" type="search" placeholder="Tìm kiếm" aria-label="Search">
+            <form class="d-flex" role="search" th:action="@{/index/find}" th:object="${book}" method="GET">
+                <input class="form-control me-2" type="search" placeholder="Tìm kiếm" aria-label="Search" th:field="*{tenSach}">
                 <button class="btn btn-outline-success me-2" type="submit" style="white-space: nowrap">Tìm kiếm</button>
             </form>
-            <div th:unless="${#authorization.expression('hasRole(''USER'')')}">
+            <div th:unless="${#authorization.expression('hasAnyRole(''USER'', ''ADMIN'')')}">
                 <a  class="btn btn-primary" th:href="@{/login}" role="button">
                     Đăng nhập
                 </a>
@@ -25,7 +25,8 @@
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="#">Thông báo</a></li>
                     <li><a class="dropdown-item" th:href="@{/profile}">Quản lý tài khoản</a></li>
-                    <li><a class="dropdown-item" href="#">Đổi mật khẩu</a></li>
+                    <li><a class="dropdown-item" th:href="@{/changepassword}">Đổi mật khẩu</a></li>
+                    <li th:if="${#authorization.expression('hasRole(''ADMIN'')')}"><a class="dropdown-item" href="#">Cập nhật thư viện</a></li>
                     <li><hr class="dropdown-divider"></li>
                     <li><form class="dropdown-item" action="#" th:action="@{/logout}" method="POST">
                             <input type="submit" class="btn" value="Đăng xuất"/>
@@ -35,7 +36,52 @@
             </div>
         </div>
     </nav>
+    <main>
+        <div class="album py-5 bg-body-tertiary">
+            <div class="container">
 
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                    <div class="col" th:each="book : ${books}">
+                        <div class="card shadow-sm">
+                            <img alt="" class="bd-placeholder-img card-img-top" th:src="@{/img/img1.jpg}" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
+                            <div class="card-body">
+                                <h3 th:text="${book.tenSach}"></h3>
+                                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="btn-group">
+                                        <a th:href="@{/book(id=${book.id})}" type="button" class="btn btn-sm btn-outline-secondary">Xem thông tin</a>
+                                    </div>
+                                    <small class="text-body-secondary">9 mins</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+<!--            <table class="table table-bordered table-striped">-->
+<!--                <thead class="table-primary">-->
+<!--                <tr>-->
+<!--                    <td>Mã sách</td>-->
+<!--                    <td>Tên sách</td>-->
+<!--                    <td>Năm xuất bản</td>-->
+<!--                    <td>Điểm đánh giá</td>-->
+<!--                    <td>Tác giả</td>-->
+<!--                    <td>Thể loại</td>-->
+<!--                </tr>-->
+<!--                </thead>-->
+<!--                <tbody th:each="book : ${books}">-->
+<!--                <tr>-->
+<!--                    <td th:text="${book.id}"></td>-->
+<!--                    <td th:text="${book.tenSach}"></td>-->
+<!--                    <td th:text="${book.namXuatBan}"></td>-->
+<!--                    <td th:text="${book.diemDanhGia}"></td>-->
+<!--                    <td th:text="${book.author.getHoVaTen()}"></td>-->
+<!--                    <td th:each="genre : ${book.genres}"><span th:text="${genre.getTentheLoai()}"></span></td>-->
+<!--                </tr>-->
+<!--                </tbody>-->
+<!--            </table>-->
+        </div>
+    </main>
     <script th:src="@{/js/bootstrap.bundle.js}"></script>
 </body>
 </html>

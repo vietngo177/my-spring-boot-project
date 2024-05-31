@@ -2,7 +2,7 @@ package vn.vietngo.spring.myproject.entity;
 
 import jakarta.persistence.*;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 @Entity
