@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import vn.vietngo.spring.myproject.entity.Account;
 import vn.vietngo.spring.myproject.entity.Role;
 import vn.vietngo.spring.myproject.service.AccountService;
-import vn.vietngo.spring.myproject.service.RoleService;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -22,12 +21,10 @@ import java.util.Collection;
 @RequestMapping("/signup")
 public class SignupController {
     private AccountService accountService;
-    private RoleService roleService;
 
     @Autowired
-    public SignupController(AccountService accountService, RoleService roleService ) {
+    public SignupController(AccountService accountService) {
         this.accountService = accountService;
-        this.roleService = roleService;
     }
 
     @GetMapping("")
@@ -55,8 +52,8 @@ public class SignupController {
             return "signup";
         }
         account.setMatKhau(new BCryptPasswordEncoder().encode(account.getMatKhau()));
-        Role defaultRole = roleService.findByRole("ROLE_USER");
-        Collection<Role> list = new ArrayList<Role>();
+        Role defaultRole = new Role("ROLE_USER");
+        Collection<Role> list = new ArrayList<>();
         list.add(defaultRole);
         account.setRoles(list);
         accountService.addAccount(account);

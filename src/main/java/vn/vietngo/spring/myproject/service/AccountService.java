@@ -7,4 +7,6 @@ public interface AccountService {
     Account getAccountByTenDangNhap(String tenDangNhap);
 
     void addAccount(Account account);
+
+    void updateAccount(Account account);
 }

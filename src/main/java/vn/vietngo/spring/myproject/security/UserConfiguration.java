@@ -35,8 +35,9 @@ public class UserConfiguration {
                         .anyRequest().permitAll()
         ).formLogin(
                 form->form.loginPage("/login")
-                        .loginProcessingUrl("/authenticateTheUser")
-                        .permitAll()
+                        .loginProcessingUrl("/login")
+                        .defaultSuccessUrl("/index",true)
+//                        .failureUrl("/login?error=true")
         ).logout(
                 logout->logout.permitAll()
         );
