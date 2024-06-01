@@ -43,7 +43,7 @@
                             <div class="input-field"> <span class="far fa-user p-2"></span> <input type="text" placeholder="Họ và tên" name="hovaten" th:field="*{hoVaTen}" >  </div>
                         </div>
                         <div class="form-group py-1 pb-2">
-                            <div class="input-field"> <span class="fas fa-envelope p-2"></span> <input type="text" placeholder="Email" name="email" th:field="*{email}">  </div>
+                            <div class="input-field"> <span class="fas fa-envelope p-2"></span> <input type="email" style="border-style: hidden; width: 325px" placeholder="Email" name="email" th:field="*{email}">  </div>
                             <div th:if="${#fields.hasErrors('email')}">
                                 <ul style="list-style-type:none">
                                     <li th:each="error: ${#fields.errors('email')}" th:text="${error}"></li>

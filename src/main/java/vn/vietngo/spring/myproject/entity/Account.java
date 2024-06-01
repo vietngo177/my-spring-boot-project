@@ -39,6 +39,9 @@ public class Account {
     @Column(name="active")
     private boolean active = true;
 
+    @Column(name="resetpasswordtoken")
+    private String resetPasswordToken;
+
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
             name="accounts_roles",
@@ -120,6 +123,18 @@ public class Account {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public String getResetPasswordToken() {
+        return resetPasswordToken;
+    }
+
+    public void setResetPasswordToken(String resetPasswordToken) {
+        this.resetPasswordToken = resetPasswordToken;
     }
 
     @Override

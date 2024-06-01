@@ -17,26 +17,48 @@
                 <div class="panel-heading">
                     <h3 class="pt-3 font-weight-bold">Thông tin cá nhân</h3>
                 </div>
-                <div class="panel-body p-3">
+                <div class="panel-body p-3 pt-2">
                     <form action="#" th:action="@{/profile/save}" th:object="${account}" method="POST">
+                        <input type="hidden" th:field="*{id}" />
+                        <input type="hidden" th:field="*{matKhau}" />
+                        <div th:if="${message != null}" class="alert alert-success text-center my-0 p-2">[[${message}]]</div>
                         <div class="form-group py-2">
-                            <p>Tên đăng nhập:</p>
-                            <div class="input-field"> </span> <input type="text" name="tenDangNhap" th:field="*{tenDangNhap}" readonly> </div>
+                            <div>Tên đăng nhập:</div>
+                            <div class="input-field"><label>
+                                <input type="text" name="tenDangNhap" th:field="*{tenDangNhap}" readonly>
+                            </label></div>
+                            <div th:if="${#fields.hasErrors('tenDangNhap')}">
+                                <ul style="list-style-type:none">
+                                    <li th:each="error: ${#fields.errors('tenDangNhap')}" th:text="${error}"></li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="form-group py-1 pb-2">
-                            <p>Họ và tên:</p>
-                            <div class="input-field"> <input type="text" placeholder="Họ và tên" name="hovaten" th:field="*{hoVaTen}" >  </div>
+                            <div>Họ và tên:</div>
+                            <div class="input-field"><label>
+                                <input type="text" placeholder="Họ và tên" name="hovaten" th:field="*{hoVaTen}" >
+                            </label></div>
+                            <div th:if="${#fields.hasErrors('hoVaTen')}">
+                                <ul style="list-style-type:none">
+                                    <li th:each="error: ${#fields.errors('hoVaTen')}" th:text="${error}"></li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="form-group py-1 pb-2">
-                            <p>Email:</p>
-                            <div class="input-field"> <input type="text" name="email" th:field="*{email}">  </div>
+                            <div>Email:</div>
+                            <div class="input-field"><label>
+                                <input type="email" style="border-style: hidden; width: 325px" name="email" th:field="*{email}">
+                            </label></div>
                             <div th:if="${#fields.hasErrors('email')}">
                                 <ul style="list-style-type:none">
                                     <li th:each="error: ${#fields.errors('email')}" th:text="${error}"></li>
                                 </ul>
                             </div>
                         </div>
-                        <button type="submit" id="submit" class="btn btn-primary btn-block mt-3" th:onclick="${thongbao}">Cập nhật</button>
+                        <div class="text-center mt-2">
+                            <button class="btn btn-primary" type="submit">Cập nhật</button>
+                            <a class="btn btn-primary" th:href="@{/index}" role="button">Thoát</a>
+                        </div>
                     </form>
                 </div>
             </div>

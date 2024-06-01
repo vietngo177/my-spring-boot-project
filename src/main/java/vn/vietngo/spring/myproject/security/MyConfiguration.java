@@ -11,7 +11,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import javax.sql.DataSource;
 
 @Configuration
-public class UserConfiguration {
+public class MyConfiguration {
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
@@ -40,6 +40,9 @@ public class UserConfiguration {
 //                        .failureUrl("/login?error=true")
         ).logout(
                 logout->logout.permitAll()
+                            .deleteCookies("remember-me")
+        ).rememberMe(
+                remember->remember.tokenValiditySeconds(604800)
         );
 
 

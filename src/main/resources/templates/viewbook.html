@@ -6,59 +6,46 @@
   <link th:href="@{/css/bootstrap.css}" rel="stylesheet" />
 </head>
 <body>
-<nav class="navbar bg-body-tertiary">
-  <div class="container-fluid">
-    <a class="navbar-brand mb-0 h1" href="index.html">Trang chủ</a>
-    <form class="d-flex" role="search">
-      <input class="form-control me-2" type="search" placeholder="Tìm kiếm" aria-label="Search">
-      <button class="btn btn-outline-success me-2" type="submit" style="white-space: nowrap">Tìm kiếm</button>
-    </form>
-    <div th:unless="${#authorization.expression('hasRole(''USER'')')}">
-      <a  class="btn btn-primary" th:href="@{/login}" role="button">
-        Đăng nhập
-      </a>
-    </div>
-    <div sec:authorize="isAuthenticated()" class="nav-item dropdown me-4">
-      <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-        Xin chào, <span sec:authentication="principal.username"></span>
-      </a>
-      <ul class="dropdown-menu">
-        <li><a class="dropdown-item" href="#">Thông báo</a></li>
-        <li><a class="dropdown-item" th:href="@{/profile}">Quản lý tài khoản</a></li>
-        <li><a class="dropdown-item" th:href="@{/changepassword}">Đổi mật khẩu</a></li>
-        <li><hr class="dropdown-divider"></li>
-        <li><form class="dropdown-item" action="#" th:action="@{/logout}" method="POST">
-          <input type="submit" class="btn" value="Đăng xuất"/>
-        </form>
-        </li>
-      </ul>
-    </div>
-  </div>
-</nav>
+<nav th:replace="~{navbar :: copy}"></nav>
 <main>
-  <table class="table table-bordered table-striped">
-      <thead class="table-primary">
-      <tr>
-          <td>Mã sách</td>
-          <td>Tên sách</td>
-          <td>Năm xuất bản</td>
-          <td>Điểm đánh giá</td>
-          <td>Tác giả</td>
-          <td>Thể loại</td>
-      </tr>
-      </thead>
-      <tbody >
-      <tr>
-          <td th:text="${book.id}"></td>
-          <td th:text="${book.tenSach}"></td>
-          <td th:text="${book.namXuatBan}"></td>
-          <td th:text="${book.diemDanhGia}"></td>
-          <td th:text="${book.author.getHoVaTen()}"></td>
-          <td th:each="genre : ${book.genres}"><span th:text="${genre.getTentheLoai()}"></span></td>
-      </tr>
-      </tbody>
-  </table>
+    <div class="container media">
+        <img class="mr-3" th:src="@{/img/img1.jpg}"  alt="Generic placeholder image">
+        <div class="media-body">
+            <h5 class="mt-0" th:text="${book.getTenSach()}"></h5>
+            <div class="media mt-3">
+                <p>Tác giả: <span th:text="${book.getAuthor()}">Tác giả</span></p>
+                <p>Năm xuất bản: <span th:text="${book.getNamXuatBan()}">Năm xuất bản</span></p>
+                <p>Thể loại: <span th:each="genre : ${book.getGenres()}"><span th:text="${genre.getTentheLoai()}"></span> </span></p>
+            </div>
+        </div>
+    </div>
 </main>
+<!--<main>-->
+<!--    <div class="container">-->
+<!--    <table class="table table-bordered table-striped text-center">-->
+<!--        <thead class="table-primary">-->
+<!--            <tr>-->
+<!--                <td>Mã sách</td>-->
+<!--                <td>Tên sách</td>-->
+<!--                <td>Năm xuất bản</td>-->
+<!--                <td>Điểm đánh giá</td>-->
+<!--                <td>Tác giả</td>-->
+<!--                <td>Thể loại</td>-->
+<!--            </tr>-->
+<!--        </thead>-->
+<!--        <tbody>-->
+<!--            <tr>-->
+<!--                <td th:text="${book.id}"></td>-->
+<!--                <td th:text="${book.tenSach}"></td>-->
+<!--                <td th:text="${book.namXuatBan}"></td>-->
+<!--                <td th:text="${book.diemDanhGia}"></td>-->
+<!--                <td th:text="${book.author.getHoVaTen()}"></td>-->
+<!--                <td><span th:each="genre : ${book.genres}"><p th:text="${genre.getTentheLoai()}"></p></span></td>-->
+<!--            </tr>-->
+<!--        </tbody>-->
+<!--    </table>-->
+<!--    </div>-->
+<!--</main>-->
 <script th:src="@{/js/bootstrap.bundle.js}"></script>
 </body>
 </html>

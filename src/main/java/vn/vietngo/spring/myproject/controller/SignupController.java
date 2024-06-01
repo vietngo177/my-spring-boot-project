@@ -20,7 +20,7 @@ import java.util.Collection;
 @Controller
 @RequestMapping("/signup")
 public class SignupController {
-    private AccountService accountService;
+    private final AccountService accountService;
 
     @Autowired
     public SignupController(AccountService accountService) {

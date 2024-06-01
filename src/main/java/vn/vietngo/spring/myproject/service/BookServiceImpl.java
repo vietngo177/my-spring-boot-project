@@ -2,7 +2,7 @@ package vn.vietngo.spring.myproject.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import vn.vietngo.spring.myproject.dao.BookRepository;
+import vn.vietngo.spring.myproject.repository.BookRepository;
 import vn.vietngo.spring.myproject.entity.Book;
 
 import java.util.List;
@@ -31,5 +31,15 @@ public class BookServiceImpl implements BookService {
     @Override
     public Book getBookById(Long id) {
         return bookRepository.getReferenceById(id);
+    }
+
+    @Override
+    public void addBook(Book book){
+        bookRepository.save(book);
+    }
+
+    @Override
+    public void deleteBookById(Long id){
+        bookRepository.deleteById(id);
     }
 }

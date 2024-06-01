@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Trang chủ</title>
+    <link th:href="@{/css/bootstrap.css}" rel="stylesheet" />
+</head>
+<body>
+<nav th:replace="~{navbar :: copy}"></nav>
+<main>
+    <div class="container ">
+    <a th:href="@{/book/create}" class="btn btn-primary btn-sm ">Thêm sách</a>
+    <table class="table table-bordered table-striped text-center">
+        <thead class="table-primary">
+        <tr>
+            <td>Mã sách</td>
+            <td>Tên sách</td>
+            <td>Hình ảnh</td>
+            <td>Năm xuất bản</td>
+            <td>Điểm đánh giá</td>
+            <td>Tác giả</td>
+            <td>Thể loại</td>
+            <td>Cập nhật</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="book1 : ${books}">
+            <td th:text="${book1.id}"></td>
+            <td th:text="${book1.tenSach}"></td>
+            <td th:text="${book1.hinhAnh}"></td>
+            <td th:text="${book1.namXuatBan}"></td>
+            <td th:text="${book1.diemDanhGia}"></td>
+            <td th:text="${book1.author}"></td>
+            <td><span th:each="genre : ${book1.genres}"><span th:text="${genre}"></span> </span></td>
+            <td>
+                <a th:href="@{/book/update(id=${book1.id})}" class="btn btn-primary btn-sm">Cập nhật</a>
+                <a th:href="@{/book/delete(id=${book1.id})}" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn xóa sách khỏi thư viện?')">Xóa</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    </div>
+</main>
+<script th:src="@{/js/bootstrap.bundle.js}"></script>
+</body>
+</html>

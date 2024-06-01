@@ -1,14 +1,13 @@
 package vn.vietngo.spring.myproject.controller;
 
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import vn.vietngo.spring.myproject.entity.Account;
 import vn.vietngo.spring.myproject.entity.Book;
 import vn.vietngo.spring.myproject.service.BookService;
 
@@ -26,6 +25,7 @@ public class IndexController {
     }
 
     @GetMapping(value = {"/","/index"})
+    @Cacheable(value = "booklist")
     public String index(Model model) {
         List<Book> list = bookService.getAllBook();
         model.addAttribute("books", list);
@@ -39,4 +39,8 @@ public class IndexController {
         model.addAttribute("books", list);
         return "index";
     }
+
+    @Scheduled(fixedRate = 300*1000)
+    @CacheEvict(value = "list", allEntries = true)
+    public void clearAllCache(){}
 }
