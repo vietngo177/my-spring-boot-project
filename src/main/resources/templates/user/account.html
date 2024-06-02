@@ -18,7 +18,7 @@
                     <h3 class="pt-3 font-weight-bold">Thông tin cá nhân</h3>
                 </div>
                 <div class="panel-body p-3 pt-2">
-                    <form action="#" th:action="@{/profile/save}" th:object="${account}" method="POST">
+                    <form action="#" th:action="@{/account/save}" th:object="${account}" method="POST">
                         <input type="hidden" th:field="*{id}" />
                         <input type="hidden" th:field="*{matKhau}" />
                         <div th:if="${message != null}" class="alert alert-success text-center my-0 p-2">[[${message}]]</div>

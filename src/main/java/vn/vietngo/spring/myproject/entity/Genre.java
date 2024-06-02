@@ -19,10 +19,14 @@ public class Genre {
     @Column(name="tentheloai")
     private String tentheLoai;
 
-    @ManyToMany(mappedBy = "genres")
+    @OneToMany(mappedBy = "genre")
     private List<Book> books;
 
     public Genre() {
+    }
+
+    public Genre(String tentheLoai) {
+        this.tentheLoai = tentheLoai;
     }
 
     public Genre(List<Book> books, String tentheLoai) {

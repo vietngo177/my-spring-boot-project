@@ -1,5 +1,6 @@
 package vn.vietngo.spring.myproject.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -34,13 +35,14 @@ public class IndexController {
     }
 
     @GetMapping("/index/find")
-    public String index(@ModelAttribute Book book, Model model) {
+    public String index(@ModelAttribute Book book,Model model) {
         List<Book> list = bookService.getBookByTenSach(book.getTenSach());
+        model.addAttribute("book", new Book());
         model.addAttribute("books", list);
         return "index";
     }
 
-    @Scheduled(fixedRate = 300*1000)
+    @Scheduled(fixedRate = 3600*1000)
     @CacheEvict(value = "list", allEntries = true)
     public void clearAllCache(){}
 }

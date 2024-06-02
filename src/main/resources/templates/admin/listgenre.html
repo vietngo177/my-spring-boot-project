@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách thể loại trong cơ sở dữ liệu</title>
+    <link th:href="@{/css/bootstrap.css}" rel="stylesheet" />
+</head>
+<body>
+<nav th:replace="~{fragments/navbar :: navbar}"></nav>
+<main>
+    <div class="container mt-4">
+        <h3 class="text-center">CƠ SỞ DỮ LIỆU THỂ LOẠI </h3>
+        <hr/>
+        <a th:href="@{/book/create}" class="btn btn-primary btn-sm mb-2 mr-2">Thêm sách</a>
+        <a th:href="@{/author/create}" class="btn btn-primary btn-sm mb-2 mr-2">Thêm tác giả</a>
+        <a th:href="@{/genre/create}" class="btn btn-primary btn-sm mb-2 mr-2">Thêm thể loại</a>
+        <table class="table table-bordered table-striped text-center">
+            <thead class="table-primary">
+            <tr>
+                <td width="8%">Id</td>
+                <td>Thể loại</td>
+                <td>Các tác phẩm</td>
+                <td width="15%">Cập nhật</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="genre1 : ${genres}">
+                <td th:text="${genre1.id}"></td>
+                <td th:text="${genre1.tentheLoai}"></td>
+                <td th:if="${genre1.books.size()==0}"></td>
+                <td th:each="book: ${genre1.books}" class="row"><span th:text="${book.tenSach}"></span></td>
+                <td>
+                    <a th:href="@{/genre/update(id=${genre1.id})}" class="btn btn-primary btn-sm">Cập nhật</a>
+                    <a th:href="@{/genre/delete(id=${genre1.id})}" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn xóa thẻ loại sách này khỏi dữ liệu?')">Xóa</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+<script th:src="@{/js/bootstrap.bundle.js}"></script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách thể loại trong cơ sở dữ liệu</title>
+    <link th:href="@{/css/bootstrap.css}" rel="stylesheet" />
+</head>
+<body>
+<nav th:replace="~{fragments/navbar :: navbar}"></nav>
+<main>
+    <div class="container mt-4">
+        <a th:href="@{/account/add}" class="btn btn-primary btn-sm mb-2 mr-2">Thêm người dùng</a>
+        <div th:if="${message != null}" class="alert alert-success text-center my-0 p-2">[[${message}]]</div>
+            <table class="table table-bordered table-striped text-center">
+                <thead class="table-primary">
+                <tr>
+                    <td width="1%" hidden="hidden"></td>
+                    <td width="5%">Id</td>
+                    <td>Họ và tên</td>
+                    <td>Tên đăng nhập</td>
+                    <td>Email</td>
+                    <td>Quyền hạn</td>
+                    <td width="15%">Cập nhật</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="account1 : ${accounts}">
+                    <form th:action="@{/account/authorize}" th:object="${authorize}" method="post">
+                        <td hidden="hidden"><input type="hidden" name="id" th:value="${account1.id}"></td>
+                        <td th:text="${account1.id}"></td>
+                        <td th:text="${account1.hoVaTen}"></td>
+                        <td th:text="${account1.tenDangNhap}"></td>
+                        <td th:text="${account1.email}"></td>
+                        <td>
+                            <select class="form-select" name="role">
+                                <option th:each="role1 : ${roles}" th:value="${role1.id}" th:text="${role1.role}"></option>
+                            </select>
+                        </td>
+                        <td>
+                            <button type="submit" class="btn btn-primary btn-sm">Cập nhật</button>
+                            <a th:href="@{/account/delete(id=${account1.id})}" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn xóa người dùng này?')">Xóa</a>
+                        </td>
+                    </form>
+                </tr>
+                </tbody>
+            </table>
+    </div>
+</main>
+<script th:src="@{/js/bootstrap.bundle.js}"></script>
+</body>
+</html>

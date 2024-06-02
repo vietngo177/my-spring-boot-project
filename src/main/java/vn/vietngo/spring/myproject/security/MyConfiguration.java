@@ -31,7 +31,9 @@ public class MyConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(
                 configurer->configurer
-                        .requestMatchers("/register/**").permitAll()
+                        .requestMatchers("/book").permitAll()
+                        .requestMatchers("/author/**","book/**","genre/**","/account/list","/account/add","/account/authorize","account/delete").hasAnyRole("ADMIN")
+                        .requestMatchers("/account/**","/changepassword/**").hasAnyRole("USER","ADMIN")
                         .anyRequest().permitAll()
         ).formLogin(
                 form->form.loginPage("/login")

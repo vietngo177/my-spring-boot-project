@@ -27,6 +27,10 @@ public class Author {
 
     public Author() {}
 
+    public Author(String hoVaTen) {
+        this.hoVaTen = hoVaTen;
+    }
+
     public Author(String hoVaTen, Date ngaySinh, String tieusu, List<Book> books) {
         this.books = books;
         this.hoVaTen = hoVaTen;

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Cập nhật sách</title>
+    <link th:href="@{/css/bootstrap.css}" rel="stylesheet" />
+</head>
+<body>
+<nav th:replace="~{fragments/navbar :: navbar}"></nav>
+<main class="container">
+    <h3 class="text-center mt-3">CẬP NHẬT SÁCH</h3>
+    <hr/>
+    <div th:if="${message != null}" class="alert alert-success text-center my-0 p-2">[[${message}]]</div>
+    <form th:action="@{/book/save}" th:object="${book}" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="id" th:field="*{id} ">
+        <div class="row">
+            <div class="form-group mt-1 mb-3 col-6">
+                <div>Tên sách:</div>
+                <span class="input-field mt-0"> <input type="text" placeholder="Tên sách" name="tenSach"  style="width:400px"  th:field="*{tenSach}" required> </span>
+            </div>
+            <div class="form-group mt-1 mb-3 col-6">
+                <div>Năm xuất bản:</div>
+                <span class="input-field"> <input type="text" placeholder="Năm xuất bản" name="namxuatban" style="width:400px" th:field="*{namXuatBan}" >  </span>
+            </div>
+        </div>
+            <div class="form-group mb-3">
+                <div>Tác giả:</div>
+                <select class="form-select" th:field="*{author}">
+                    <option value="0">Chọn tác giả</option>
+                    <option th:each="author1 : ${authors}" th:value="${author1.id}" th:text="${author1.hoVaTen}"></option>
+                </select>
+                <span class="input-field mt-0"> <input class="w-100" type="text" placeholder="Tác giả khác" name="tenTacGiaMoi"></span>
+            </div>
+        <div class="form-group mb-3">
+            <div>Thể loại:</div>
+            <select class="form-select" th:field="*{genre}" >
+                <option value="0">Chọn thể loại</option>
+                <option th:each="genre1 : ${genres}" th:value="${genre1.id}" th:text="${genre1.tentheLoai}"></option>
+            </select>
+            <span class="input-field mt-0"> <input class="w-100" type="text" placeholder="Thể loại khác" name="tenTheLoaiMoi"></span>
+        </div>
+        <div class="form-group mb-3">
+            <div>Hình ảnh sách:</div>
+            <div class="input-field"> <input type="file" accept="image/png, image/jpeg" name="hinhanh" id="hinhanh"> </div>
+        </div>
+        <div class="mt-3">
+            <button class="btn btn-primary" type="submit">Cập nhật</button>
+            <a class="btn btn-primary" th:href="@{/book/list}" role="button">Quay lại</a>
+        </div>
+    </form>
+</main>
+<script th:src="@{/js/bootstrap.bundle.js}"></script>
+</body>
+</html>

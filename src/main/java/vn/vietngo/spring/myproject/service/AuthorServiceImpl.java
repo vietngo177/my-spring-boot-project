@@ -1,5 +1,6 @@
 package vn.vietngo.spring.myproject.service;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import vn.vietngo.spring.myproject.repository.AuthorRepository;
@@ -8,6 +9,7 @@ import vn.vietngo.spring.myproject.entity.Author;
 import java.util.List;
 
 @Service
+@Transactional
 public class AuthorServiceImpl implements AuthorService {
     private AuthorRepository authorRepository;
 
@@ -16,6 +18,11 @@ public class AuthorServiceImpl implements AuthorService {
     @Autowired
     public AuthorServiceImpl(AuthorRepository authorRepository) {
         this.authorRepository = authorRepository;
+    }
+
+    @Override
+    public Author updateAuthor(Author author) {
+        return authorRepository.saveAndFlush(author);
     }
 
     @Override

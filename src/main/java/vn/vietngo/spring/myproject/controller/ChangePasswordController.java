@@ -25,7 +25,7 @@ public class ChangePasswordController {
 
     @GetMapping("")
     public String changePassword() {
-        return "changepassword";
+        return "/user/changepassword";
     }
 
     @PostMapping("/save")
@@ -42,6 +42,6 @@ public class ChangePasswordController {
             accountService.updateAccount(account1);
             model.addAttribute("message", "Bạn đã đổi mật khẩu thành công!");
         }
-        return "changepassword";
+        return "/user/changepassword";
     }
 }

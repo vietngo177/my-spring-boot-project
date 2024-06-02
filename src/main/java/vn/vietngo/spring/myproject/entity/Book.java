@@ -1,12 +1,7 @@
 package vn.vietngo.spring.myproject.entity;
 
 import jakarta.persistence.*;
-import org.springframework.context.annotation.Lazy;
-
-import java.sql.Blob;
 import java.time.Year;
-import java.util.Collection;
-import java.util.List;
 
 @Entity
 @Table(name="books")
@@ -25,30 +20,37 @@ public class Book {
     @Column(name="diemdanhgia")
     private Float diemDanhGia;
 
-    @Lob
     @Column(name="hinhanh")
-    private Blob hinhAnh;
+    private String hinhAnh;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @Column(name="tomtat")
+    private String tomTat;
+
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
     @JoinColumn(name="author_id")
     private Author author;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name="books_genres",
-            joinColumns = @JoinColumn(name="book_id"),
-            inverseJoinColumns = @JoinColumn(name = "genre_id")
-    )
-    private List<Genre> genres;
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
+    @JoinColumn(name="genre_id")
+    private Genre genre;
 
     public Book() {}
 
-    public Book(String tenSach, Year namXuatBan, Float diemDanhGia, Blob hinhAnh, Author author, List<Genre> genres) {
+    public Book(String tenSach, Year namXuatBan, Float diemDanhGia, String hinhAnh, Author author, Genre genres) {
         this.tenSach = tenSach;
         this.namXuatBan = namXuatBan;
         this.diemDanhGia = diemDanhGia;
         this.hinhAnh = hinhAnh;
         this.author = author;
-        this.genres = genres;
+        this.genre = genres;
+    }
+
+    public String getTomTat() {
+        return tomTat;
+    }
+
+    public void setTomTat(String tomTat) {
+        this.tomTat = tomTat;
     }
 
     public Long getId() {
@@ -83,11 +85,11 @@ public class Book {
         this.diemDanhGia = diemDanhGia;
     }
 
-    public Blob getHinhAnh() {
+    public String getHinhAnh() {
         return hinhAnh;
     }
 
-    public void setHinhAnh(Blob hinhAnh) {
+    public void setHinhAnh(String hinhAnh) {
         this.hinhAnh = hinhAnh;
     }
 
@@ -99,16 +101,22 @@ public class Book {
         this.author = author;
     }
 
-    public List<Genre> getGenres() {
-        return genres;
+    public Genre getGenre() {
+        return genre;
     }
 
-    public void setGenres(List<Genre> genres) {
-        this.genres = genres;
+    public void setGenre(Genre genre) {
+        this.genre = genre;
     }
 
     @Override
     public String toString() {
         return tenSach;
+    }
+
+    @Transient
+    public String getHinhAnhPath() {
+        if (id == null && hinhAnh == null) return null;
+        return "/img/" + id + "/" + hinhAnh;
     }
 }

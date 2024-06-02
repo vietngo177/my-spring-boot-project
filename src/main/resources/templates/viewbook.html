@@ -4,48 +4,34 @@
   <meta charset="UTF-8">
   <title>Trang chủ</title>
   <link th:href="@{/css/bootstrap.css}" rel="stylesheet" />
+    <style>
+        .container {
+            display: grid;
+            grid-template-columns: 35% 65%;
+            grid-template-rows: 100px 100px;
+        }
+    </style>
 </head>
 <body>
-<nav th:replace="~{navbar :: copy}"></nav>
+<nav th:replace="~{fragments/navbar :: navbar}"></nav>
 <main>
-    <div class="container media">
-        <img class="mr-3" th:src="@{/img/img1.jpg}"  alt="Generic placeholder image">
-        <div class="media-body">
-            <h5 class="mt-0" th:text="${book.getTenSach()}"></h5>
+    <div class="container mt-4">
+        <img class="mr-3 ml-5" th:src="@{${book.HinhAnhPath}}" width="200px"  alt="Generic placeholder image">
+        <div>
+            <h2 class="mt-0" th:text="${book.getTenSach()}"></h2>
             <div class="media mt-3">
-                <p>Tác giả: <span th:text="${book.getAuthor()}">Tác giả</span></p>
-                <p>Năm xuất bản: <span th:text="${book.getNamXuatBan()}">Năm xuất bản</span></p>
-                <p>Thể loại: <span th:each="genre : ${book.getGenres()}"><span th:text="${genre.getTentheLoai()}"></span> </span></p>
+                <p><b>Tác giả: </b><span th:text="${book.getAuthor()}">Tác giả</span></p>
+                <p><b>Năm xuất bản: </b><span th:text="${book.getNamXuatBan()}">Năm xuất bản</span></p>
+                <p><b>Thể loại: </b><span th:text="${book.getGenre()}">Thể loại</span></p>
+                <hr>
+                <b>Tóm tắt sách:</b>
+                <p>
+                    </b><span th:text="${book.getTomTat()}">Tóm tắt</span>
+                </p>
             </div>
         </div>
     </div>
 </main>
-<!--<main>-->
-<!--    <div class="container">-->
-<!--    <table class="table table-bordered table-striped text-center">-->
-<!--        <thead class="table-primary">-->
-<!--            <tr>-->
-<!--                <td>Mã sách</td>-->
-<!--                <td>Tên sách</td>-->
-<!--                <td>Năm xuất bản</td>-->
-<!--                <td>Điểm đánh giá</td>-->
-<!--                <td>Tác giả</td>-->
-<!--                <td>Thể loại</td>-->
-<!--            </tr>-->
-<!--        </thead>-->
-<!--        <tbody>-->
-<!--            <tr>-->
-<!--                <td th:text="${book.id}"></td>-->
-<!--                <td th:text="${book.tenSach}"></td>-->
-<!--                <td th:text="${book.namXuatBan}"></td>-->
-<!--                <td th:text="${book.diemDanhGia}"></td>-->
-<!--                <td th:text="${book.author.getHoVaTen()}"></td>-->
-<!--                <td><span th:each="genre : ${book.genres}"><p th:text="${genre.getTentheLoai()}"></p></span></td>-->
-<!--            </tr>-->
-<!--        </tbody>-->
-<!--    </table>-->
-<!--    </div>-->
-<!--</main>-->
 <script th:src="@{/js/bootstrap.bundle.js}"></script>
 </body>
 </html>

@@ -7,7 +7,9 @@ import java.util.List;
 public interface BookService {
     void addBook(Book book);
 
-    List<Book> getBookByTenSach(String tenSach);
+    Book updateBook(Book book);
+
+    List<Book> getBookByTenSach(String ten);
 
     List<Book> getAllBook();
 

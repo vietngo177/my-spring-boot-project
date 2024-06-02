@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Trang chủ</title>
+    <link th:href="@{/css/bootstrap.css}" rel="stylesheet" />
+    <script src="https://kit.fontawesome.com/42b7961034.js" crossorigin="anonymous"></script></head>
+</head>
+<body>
+<nav th:replace="~{fragments/navbar :: navbar}"></nav>
+<main>
+    <div class="album py-5 bg-body-tertiary">
+        <div class="container">
+            <h3>TỦ SÁCH CÁ NHÂN</h3>
+            <hr>
+            <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 g-3">
+                <div class="col" th:each="book : ${books}">
+                    <div class="card shadow-sm">
+                        <img alt="" class="bd-placeholder-img card-img-top" th:src="@{${book.HinhAnhPath}}" height="300" xmlns="http://www.w3.org/2000/svg" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
+                        <div class="card-body">
+                            <h5 th:text="${book.tenSach}"></h5>
+                            <div class="text-end"><small th:text="${book.author.hoVaTen}"></small></div>
+                            <hr>
+                            <p class="card-text" th:text="${book.tomTat}"></p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <a th:href="@{/book(id=${book.id})}" type="button" class="btn btn-sm btn-outline-secondary">
+                                        <span class="button-icon"><i class="fa-solid fa-eye"></i></span>
+                                    </a>
+                                    <a th:href="@{/account/favoritebook/delete(id=${book.id})}" type="button" class="btn btn-sm btn-outline-secondary bg-secondary text-light">
+                                        <span class="button-icon"><i class="fa-solid fa-heart-crack"></i></span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<script th:src="@{/js/bootstrap.bundle.js}"></script>
+</body>
+</html>

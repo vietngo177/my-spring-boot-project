@@ -3,11 +3,9 @@ package vn.vietngo.spring.myproject.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import org.springframework.lang.NonNull;
 
-import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name="accounts")
@@ -48,29 +46,29 @@ public class Account {
             joinColumns = @JoinColumn(name = "account_id"),
             inverseJoinColumns = @JoinColumn(name="role_id")
     )
-    private Collection<Role> roles;
+    private List<Role> roles;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(
+            name="accounts_books",
+            joinColumns = @JoinColumn(name = "account_id"),
+            inverseJoinColumns = @JoinColumn(name="book_id")
+    )
+    private List<Book> books;
 
     public Account() {
     }
 
-    public Collection<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Collection<Role> roles) {
-        this.roles = roles;
-    }
-
-    public Account(Long id, String tenDangNhap, String matKhau, String hoVaTen, String email, Collection<Role> roles) {
+    public Account(Long id, String tenDangNhap, String matKhau, String hoVaTen, String email, List<Book> books) {
         this.id = id;
         this.tenDangNhap = tenDangNhap;
         this.matKhau = matKhau;
         this.hoVaTen = hoVaTen;
         this.email = email;
-        this.roles = roles;
+        this.books = books;
     }
 
-    public Account(String email, boolean gioiTinh, String hoVaTen, String matKhau, String tenDangNhap) {
+    public Account(String email, String hoVaTen, String matKhau, String tenDangNhap) {
         this.email = email;
         this.hoVaTen = hoVaTen;
         this.matKhau = matKhau;
@@ -125,8 +123,24 @@ public class Account {
         this.active = active;
     }
 
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
+    }
+
     public boolean isActive() {
         return active;
+    }
+
+    public List<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(List<Book> books) {
+        this.books = books;
     }
 
     public String getResetPasswordToken() {
@@ -140,12 +154,9 @@ public class Account {
     @Override
     public String toString() {
         return "Account{" +
-                "id='" + id + '\'' +
                 ", tenDangNhap='" + tenDangNhap + '\'' +
-                ", matKhau='" + matKhau + '\'' +
                 ", hoVaTen='" + hoVaTen + '\'' +
                 ", email='" + email + '\'' +
-                ", active='" + active + '\'' +
                 '}';
     }
 }

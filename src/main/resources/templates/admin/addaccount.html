@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách tác giả trong cơ sở dữ liệu</title>
+    <link th:href="@{/css/bootstrap.css}" rel="stylesheet" />
+</head>
+<body>
+<nav th:replace="~{fragments/navbar :: navbar}"></nav>
+<main>
+    <div class="container">
+        <h3 class="text-center mt-3">THÊM NGƯỜI DÙNG</h3>
+        <hr/>
+        <div th:if="${message != null}" class="alert alert-success text-center my-0 p-2">[[${message}]]</div>
+        <form action="#" th:action="@{/signup/save}" th:object="${account}" method="POST">
+            <input type="hidden" class="w-100" name="id" th:field="*{id} ">
+            <div class="row">
+                <div class="form-group mt-1 mb-3 col-6">
+                    <div>Tên đăng nhập:</div>
+                    <input type="text" class="w-100" name="tenDangNhap" th:field="*{tenDangNhap}">
+                    <div th:if="${#fields.hasErrors('tenDangNhap')}">
+                        <ul style="list-style-type:none">
+                            <li th:each="error: ${#fields.errors('tenDangNhap')}" th:text="${error}"></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-6">
+                    <div>Họ và tên:</div>
+                    <input type="text" class="w-100" name="hovaten" th:field="*{hoVaTen}" >
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group mb-3 col-6">
+                    <div>Mật khẩu:</div>
+                    <input type="password" class="w-100" name="matKhau" id="matKhau" th:field="*{matKhau}">
+                    <div th:if="${#fields.hasErrors('matKhau')}">
+                        <ul style="list-style-type:none">
+                            <li th:each="error: ${#fields.errors('matKhau')}" th:text="${error}"></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="form-group mb-3 col-6">
+                    <div>Xác nhận mật khẩu:</div>
+                    <input type="password" class="w-100" name="matKhauNhapLai" id="matKhauNhapLai" onblur="kiemTraMatKhau()">
+                    <div id="thongBao"></div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <div>Email đăng ký: </div>
+                <input type="email" class="w-100 border-black" style="border-style: hidden; width: 325px" name="email" th:field="*{email}">  </div>
+                <div th:if="${#fields.hasErrors('email')}">
+                    <ul style="list-style-type:none">
+                        <li th:each="error: ${#fields.errors('email')}" th:text="${error}"></li>
+                    </ul>
+            </div>
+            <div class="form-group mb-3">
+                <div>Quyền hạn: </div>
+                    <select class="form-select" th:field="*{roles}" >
+                        <option th:each="role1 : ${roles}" th:value="${role1.id}" th:text="${role1.role}"></option>
+                    </select>
+                <div th:if="${#fields.hasErrors('matKhau')}">
+                    <ul style="list-style-type:none">
+                        <li th:each="error: ${#fields.errors('matKhau')}" th:text="${error}"></li>
+                    </ul>
+                </div>
+            </div>
+            <button type="submit" id="submit" class="btn btn-primary btn-block mt-3">Đăng ký</button>
+        </form>
+    </div>
+</main>
+    <script th:src="@{/js/my_js.js}"></script>
+    <script th:src="@{/js/bootstrap.bundle.js}"></script>
+</body>
+</html>

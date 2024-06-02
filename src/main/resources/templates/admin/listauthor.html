@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách tác giả trong cơ sở dữ liệu</title>
+    <link th:href="@{/css/bootstrap.css}" rel="stylesheet" />
+</head>
+<body>
+<nav th:replace="~{fragments/navbar :: navbar}"></nav>
+<main>
+    <div class="container mt-4">
+        <h3 class="text-center">CƠ SỞ DỮ LIỆU TÁC GIẢ</h3>
+        <hr/>
+        <a th:href="@{/book/create}" class="btn btn-primary btn-sm mb-2 mr-2">Thêm sách</a>
+        <a th:href="@{/author/create}" class="btn btn-primary btn-sm mb-2 mr-2">Thêm tác giả</a>
+        <a th:href="@{/genre/create}" class="btn btn-primary btn-sm mb-2 mr-2">Thêm thể loại</a>
+        <table class="table table-bordered table-striped text-center">
+            <thead class="table-primary">
+            <tr>
+                <td width="5%">Id</td>
+                <td>Họ và tên</td>
+                <td width="12%">Ngày sinh</td>
+                <td width="30%">Tiểu sử</td>
+                <td>Các tác phẩm</td>
+                <td width="15%">Cập nhật</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="author1 : ${authors}">
+                <td th:text="${author1.id}"></td>
+                <td th:text="${author1.hoVaTen}"></td>
+                <td th:text="${author1.ngaySinh}"></td>
+                <td th:text="${author1.tieusu}" class="text-start"></td>
+                <td th:if="${author1.books.size()==0}"></td>
+                <td th:each="book: ${author1.books}" class="row"><span th:text="${book.tenSach}"></span></td>
+                <td>
+                    <a th:href="@{/author/update(id=${author1.id})}" class="btn btn-primary btn-sm">Cập nhật</a>
+                    <a th:href="@{/author/delete(id=${author1.id})}" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn xóa tác giả khỏi cơ sở dữ liệu?')">Xóa</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+<script th:src="@{/js/bootstrap.bundle.js}"></script>
+</body>
+</html>

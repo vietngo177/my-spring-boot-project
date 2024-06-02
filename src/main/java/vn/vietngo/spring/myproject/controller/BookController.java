@@ -3,13 +3,24 @@ package vn.vietngo.spring.myproject.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import vn.vietngo.spring.myproject.entity.Author;
 import vn.vietngo.spring.myproject.entity.Book;
+import vn.vietngo.spring.myproject.entity.Genre;
 import vn.vietngo.spring.myproject.service.AuthorService;
 import vn.vietngo.spring.myproject.service.BookService;
 import vn.vietngo.spring.myproject.service.GenreService;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 @RequestMapping("/book")
@@ -43,7 +54,7 @@ public class BookController {
         List<Book> books = bookService.getAllBook();
         model.addAttribute("book", new Book());
         model.addAttribute("books", books);
-        return "listbook";
+        return "admin/listbook";
     }
 
     @GetMapping("/create")
@@ -52,13 +63,47 @@ public class BookController {
         model.addAttribute("book", book);
         model.addAttribute("authors", authorService.getAllAuthor());
         model.addAttribute("genres", genreService.getAllGenre());
-        return "updatebook";
+        return "admin/updatebook";
     }
 
     @PostMapping("/save")
-    public String saveBook(@ModelAttribute Book book) {
-        bookService.addBook(book);
-        return "redirect:/book/list";
+    public String saveBook(@ModelAttribute Book book, @RequestParam(value = "tenTacGiaMoi") String tacGiaMoi ,@RequestParam(value = "tenTheLoaiMoi") String theLoaiMoi, @RequestParam(value = "hinhanh") MultipartFile multipartFile, Model model) throws IOException {
+        if(multipartFile.isEmpty()){
+            book.setHinhAnh("null");
+        }else{
+            String fileName = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
+            book.setHinhAnh(fileName);
+            if(book.getAuthor()==null) {
+                Author author = new Author(tacGiaMoi);
+                authorService.addAuthor(author);
+                book.setAuthor(author);
+            }
+            if(book.getGenre()==null) {
+                Genre genre = new Genre(theLoaiMoi);
+                genreService.addGenre(genre);
+                book.setGenre(genre);
+            }
+            Book savedBook = bookService.updateBook(book);
+            String uploadDir = "./src/main/resources/static/img/" + savedBook.getId();
+            Path uploadPath = Paths.get(uploadDir);
+
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
+
+            try (InputStream inputStream = multipartFile.getInputStream()) {
+                Path filePath = uploadPath.resolve(fileName);
+                System.out.println(filePath.toFile().getAbsoluteFile());
+                Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException ex) {
+                throw new IOException("Could not save file: " + fileName, ex);
+            }
+        }
+        model.addAttribute("book",new Book());
+        model.addAttribute("authors", authorService.getAllAuthor());
+        model.addAttribute("genres", genreService.getAllGenre());
+        model.addAttribute("message", "Bạn đã cập nhật sách vào cơ sở dữ liệu thành công");
+        return "admin/updatebook";
     }
 
     @GetMapping("/update")
@@ -67,13 +112,14 @@ public class BookController {
         model.addAttribute("book", book);
         model.addAttribute("authors", authorService.getAllAuthor());
         model.addAttribute("genres", genreService.getAllGenre());
-        return "updatebook";
+        return "admin/updatebook";
     }
 
     @GetMapping("/delete")
     public String deleteBook(@RequestParam("id") Long id){
         bookService.deleteBookById(id);
-        return "listbook";
+        return "redirect:/book/list";
     }
+
 
 }

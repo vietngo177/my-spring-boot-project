@@ -1,5 +1,6 @@
 package vn.vietngo.spring.myproject.service;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import vn.vietngo.spring.myproject.repository.BookRepository;
@@ -8,6 +9,7 @@ import vn.vietngo.spring.myproject.entity.Book;
 import java.util.List;
 
 @Service
+@Transactional
 public class BookServiceImpl implements BookService {
     private BookRepository bookRepository;
 
@@ -19,8 +21,8 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<Book> getBookByTenSach(String tenSach) {
-        return bookRepository.findByTenSach(tenSach);
+    public List<Book> getBookByTenSach(String ten) {
+        return bookRepository.findByTenSach(ten);
     }
 
     @Override
@@ -36,6 +38,11 @@ public class BookServiceImpl implements BookService {
     @Override
     public void addBook(Book book){
         bookRepository.save(book);
+    }
+
+    @Override
+    public Book updateBook(Book book) {
+        return bookRepository.saveAndFlush(book);
     }
 
     @Override

@@ -14,8 +14,6 @@ import vn.vietngo.spring.myproject.entity.Account;
 import vn.vietngo.spring.myproject.service.AccountService;
 import vn.vietngo.spring.myproject.service.MailService;
 
-import java.io.UnsupportedEncodingException;
-
 @Controller
 public class ForgotPasswordController {
     private AccountService accountService;
@@ -42,7 +40,7 @@ public class ForgotPasswordController {
     }
 
     @PostMapping("/forgotpassword/save")
-    public String processForgotPassword(HttpServletRequest request, Model model) throws MessagingException, UnsupportedEncodingException, NullPointerException {
+    public String processForgotPassword(HttpServletRequest request, Model model) throws MessagingException, NullPointerException {
         String token = RandomString.make(20);
         System.out.println(token);
         Account account = accountService.getAccountByEmail(request.getParameter("email"));
@@ -77,7 +75,7 @@ public class ForgotPasswordController {
     public String processConfirmPassword(HttpServletRequest request, Model model){
         Account account = accountService.getAccountByResetPasswordToken(request.getParameter("token"));
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        account.setMatKhau(bCryptPasswordEncoder.encode(request.getParameter("matKhau")));
+        account.setMatKhau(request.getParameter("matKhau"));
         accountService.updateAccount(account);
         model.addAttribute("message", "Bạn đã đổi mật khẩu thành công");
         return "confirmpassword";

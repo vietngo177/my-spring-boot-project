@@ -2,36 +2,39 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>Trang chủ</title>
+    <title>Danh sách thể loại trong cơ sở dữ liệu</title>
     <link th:href="@{/css/bootstrap.css}" rel="stylesheet" />
+    <style>
+        .cover {object-fit: cover;}
+    </style>
 </head>
 <body>
-<nav th:replace="~{navbar :: copy}"></nav>
+<nav th:replace="~{fragments/navbar :: navbar}"></nav>
 <main>
-    <div class="container ">
-    <a th:href="@{/book/create}" class="btn btn-primary btn-sm ">Thêm sách</a>
+    <div class="container mt-4">
+    <a th:href="@{/book/create}" class="btn btn-primary btn-sm mb-2 mr-2">Thêm sách</a>
+    <a th:href="@{/author/create}" class="btn btn-primary btn-sm mb-2 mr-2">Thêm tác giả</a>
+    <a th:href="@{/genre/create}" class="btn btn-primary btn-sm mb-2 mr-2">Thêm thể loại</a>
     <table class="table table-bordered table-striped text-center">
         <thead class="table-primary">
         <tr>
-            <td>Mã sách</td>
+            <td width="5%">Id</td>
             <td>Tên sách</td>
             <td>Hình ảnh</td>
-            <td>Năm xuất bản</td>
-            <td>Điểm đánh giá</td>
+            <td>Năm x.bản</td>
             <td>Tác giả</td>
             <td>Thể loại</td>
-            <td>Cập nhật</td>
+            <td width="15%">Cập nhật</td>
         </tr>
         </thead>
         <tbody>
         <tr th:each="book1 : ${books}">
             <td th:text="${book1.id}"></td>
             <td th:text="${book1.tenSach}"></td>
-            <td th:text="${book1.hinhAnh}"></td>
+            <td class="cover object"><img class="contain" th:src="@{${book1.HinhAnhPath}}" width="100" alt="hình ảnh"></td>
             <td th:text="${book1.namXuatBan}"></td>
-            <td th:text="${book1.diemDanhGia}"></td>
             <td th:text="${book1.author}"></td>
-            <td><span th:each="genre : ${book1.genres}"><span th:text="${genre}"></span> </span></td>
+            <td th:text="${book1.genre}"></td>
             <td>
                 <a th:href="@{/book/update(id=${book1.id})}" class="btn btn-primary btn-sm">Cập nhật</a>
                 <a th:href="@{/book/delete(id=${book1.id})}" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn xóa sách khỏi thư viện?')">Xóa</a>
