@@ -23,16 +23,6 @@ public class GenreController {
         this.genreService = genreService;
     }
 
-//    @GetMapping("")
-//    public String viewBook(@RequestParam Long id, Model model) {
-//        Book book = bookService.getBookById(id);
-//        if(book == null) {
-//            return "index";
-//        }
-//        model.addAttribute("book", book);
-//        return "viewbook";
-//    }
-
     @GetMapping("/list")
     public String list(Model model) {
         List<Genre> genres = genreService.getAllGenre();

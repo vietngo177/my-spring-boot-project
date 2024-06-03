@@ -5,7 +5,6 @@ import vn.vietngo.spring.myproject.entity.Book;
 import java.util.List;
 
 public interface BookService {
-    void addBook(Book book);
 
     Book updateBook(Book book);
 

@@ -15,7 +15,7 @@ public class Account {
     @Column(name="id")
     private Long id;
 
-    @Column(name="tendangnhap")
+    @Column(name="tendangnhap", nullable=false, unique=true)
     @NotNull(message = "Vui lòng điền vào trường này")
     private String tenDangNhap;
 
@@ -29,7 +29,7 @@ public class Account {
     @Column(name="hovaten")
     private String hoVaTen;
 
-    @Column(name="email")
+    @Column(name="email", nullable=false, unique=true)
     @NotNull(message = "Vui lòng điền vào trường này")
     @Email
     private String email;

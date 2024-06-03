@@ -51,10 +51,21 @@ public class SignupController {
                 return "admin/addaccount";
             }
         }
-        Account accountExisting = accountService.getAccountByTenDangNhap(account.getTenDangNhap());
-        if(accountExisting!=null){
+        Account accountExisting1 = accountService.getAccountByTenDangNhap(account.getTenDangNhap());
+        if(accountExisting1!=null){
             model.addAttribute("account", new Account());
-            model.addAttribute("signupError", "Tên đăng nhập đã tồn tại!");
+            model.addAttribute("signupError1", "Tên đăng nhập đã tồn tại!");
+            if(account.getRoles() == null){
+                return "signup";
+            }else{
+                model.addAttribute("book", new Book());
+                return "admin/addaccount";
+            }
+        }
+        Account accountExisting2 = accountService.getAccountByEmail(account.getEmail());
+        if(accountExisting2!=null){
+            model.addAttribute("account", new Account());
+            model.addAttribute("signupError2", "Email đăng ký đã tồn tại!");
             if(account.getRoles() == null){
                 return "signup";
             }else{

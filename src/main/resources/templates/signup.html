@@ -26,6 +26,7 @@
                                     <li th:each="error: ${#fields.errors('tenDangNhap')}" th:text="${error}"></li>
                                 </ul>
                             </div>
+                            <div th:if="${signupError1}"><span th:text="${signupError}"></span></div>
                         </div>
                         <div class="form-group py-1 pb-2">
                             <div class="input-field"> <span class="fas fa-lock px-2"></span> <input type="password" placeholder="Mật khẩu" name="matKhau" id="matKhau" th:field="*{matKhau}"> <button class="btn bg-white text-muted"> <span class="far fa-eye-slash"></span> </button> </div>
@@ -49,8 +50,8 @@
                                     <li th:each="error: ${#fields.errors('email')}" th:text="${error}"></li>
                                 </ul>
                             </div>
+                            <div th:if="${signupError2}"><span th:text="${signupError}"></span></div>
                         </div>
-                        <div th:if="${signupError}"><span th:text="${signupError}"></span></div>
                         <div class="form-inline"> <input type="checkbox" name="dieuKhoan" id="dieuKhoan" onchange="xuLyDieuKhoan()">Đồng ý với <a href="#"> điều khoản</a><span style = "color:red">*</span></div>
                         <button type="submit" id="submit" class="btn btn-primary btn-block mt-3" style="visibility: hidden;">Đăng ký</button>
                     </form>

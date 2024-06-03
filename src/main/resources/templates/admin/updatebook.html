@@ -16,28 +16,40 @@
         <div class="row">
             <div class="form-group mt-1 mb-3 col-6">
                 <div>Tên sách:</div>
-                <span class="input-field mt-0"> <input type="text" placeholder="Tên sách" name="tenSach"  style="width:400px"  th:field="*{tenSach}" required> </span>
+                <span class="input-field mt-0">
+                    <label>
+                        <input type="text" placeholder="Tên sách" name="tenSach"  style="width:400px"  th:field="*{tenSach}" required>
+                    </label>
+                </span>
             </div>
             <div class="form-group mt-1 mb-3 col-6">
                 <div>Năm xuất bản:</div>
-                <span class="input-field"> <input type="text" placeholder="Năm xuất bản" name="namxuatban" style="width:400px" th:field="*{namXuatBan}" >  </span>
+                    <label class="input-field">
+                        <input type="text" placeholder="Năm xuất bản" name="namxuatban" style="width:400px" th:field="*{namXuatBan}" >
+                    </label>
             </div>
         </div>
             <div class="form-group mb-3">
                 <div>Tác giả:</div>
-                <select class="form-select" th:field="*{author}">
-                    <option value="0">Chọn tác giả</option>
-                    <option th:each="author1 : ${authors}" th:value="${author1.id}" th:text="${author1.hoVaTen}"></option>
-                </select>
-                <span class="input-field mt-0"> <input class="w-100" type="text" placeholder="Tác giả khác" name="tenTacGiaMoi"></span>
+                <label>
+                    <select class="form-select" th:field="*{author}">
+                        <option value="0">Chọn tác giả</option>
+                        <option th:each="author1 : ${authors}" th:value="${author1.id}" th:text="${author1.hoVaTen}"></option>
+                    </select>
+                </label>
+                <label class="input-field mt-0">
+                    <input class="w-100" type="text" placeholder="Tác giả khác" name="tenTacGiaMoi">
+                </label>
             </div>
         <div class="form-group mb-3">
             <div>Thể loại:</div>
-            <select class="form-select" th:field="*{genre}" >
-                <option value="0">Chọn thể loại</option>
-                <option th:each="genre1 : ${genres}" th:value="${genre1.id}" th:text="${genre1.tentheLoai}"></option>
-            </select>
-            <span class="input-field mt-0"> <input class="w-100" type="text" placeholder="Thể loại khác" name="tenTheLoaiMoi"></span>
+            <label>
+                <select class="form-select" th:field="*{genre}" >
+                    <option value="0">Chọn thể loại</option>
+                    <option th:each="genre1 : ${genres}" th:value="${genre1.id}" th:text="${genre1.tentheLoai}"></option>
+                </select>
+            </label>
+            <label class="input-field mt-0"> <input class="w-100" type="text" placeholder="Thể loại khác" name="tenTheLoaiMoi"></label>
         </div>
         <div class="form-group mb-3">
             <div>Hình ảnh sách:</div>

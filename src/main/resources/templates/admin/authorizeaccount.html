@@ -32,9 +32,11 @@
                         <td th:text="${account1.tenDangNhap}"></td>
                         <td th:text="${account1.email}"></td>
                         <td>
-                            <select class="form-select" name="role">
-                                <option th:each="role1 : ${roles}" th:value="${role1.id}" th:text="${role1.role}"></option>
-                            </select>
+                            <label>
+                                <select class="form-select" name="role">
+                                    <option th:each="role1 : ${roles}" th:value="${role1.id}" th:text="${role1.role}"></option>
+                                </select>
+                            </label>
                         </td>
                         <td>
                             <button type="submit" class="btn btn-primary btn-sm">Cập nhật</button>
