@@ -12,6 +12,8 @@ public interface BookService {
 
     List<Book> getAllBook();
 
+    List<Book> getBookByTenSachOrTenTacGia(String tenSach, String tenTacGia);
+
     Book getBookById(Long id);
 
     void deleteBookById(Long id);

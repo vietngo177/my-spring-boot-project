@@ -52,7 +52,6 @@ public class BookController {
     @GetMapping("/list")
     public String list(Model model) {
         List<Book> books = bookService.getAllBook();
-        model.addAttribute("book", new Book());
         model.addAttribute("books", books);
         return "admin/listbook";
     }
@@ -99,7 +98,6 @@ public class BookController {
                 throw new IOException("Could not save file: " + fileName, ex);
             }
         }
-        model.addAttribute("book",new Book());
         model.addAttribute("authors", authorService.getAllAuthor());
         model.addAttribute("genres", genreService.getAllGenre());
         model.addAttribute("message", "Bạn đã cập nhật sách vào cơ sở dữ liệu thành công");

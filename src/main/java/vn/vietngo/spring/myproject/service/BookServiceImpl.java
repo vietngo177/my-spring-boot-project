@@ -36,6 +36,11 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public List<Book> getBookByTenSachOrTenTacGia(String tenSach, String tenTacGia) {
+        return bookRepository.findByTenSachContainingOrAuthor_HoVaTenContaining(tenSach, tenTacGia);
+    }
+
+    @Override
     public Book updateBook(Book book) {
         return bookRepository.saveAndFlush(book);
     }

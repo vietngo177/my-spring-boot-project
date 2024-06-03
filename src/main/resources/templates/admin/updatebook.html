@@ -52,6 +52,12 @@
             <label class="input-field mt-0"> <input class="w-100" type="text" placeholder="Thể loại khác" name="tenTheLoaiMoi"></label>
         </div>
         <div class="form-group mb-3">
+            <div>Tóm tắt:</div>
+            <label>
+                <textarea rows="12" cols="100" name="tomTat"  th:field="*{tomTat}"></textarea>
+            </label>
+        </div>
+        <div class="form-group mb-3">
             <div>Hình ảnh sách:</div>
             <div class="input-field"> <input type="file" accept="image/png, image/jpeg" name="hinhanh" id="hinhanh"> </div>
         </div>

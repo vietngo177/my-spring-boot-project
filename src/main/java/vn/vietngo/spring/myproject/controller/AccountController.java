@@ -71,7 +71,6 @@ public class AccountController {
         model.addAttribute("roles", roles);
         model.addAttribute("accounts", accounts);
         model.addAttribute("authorize", new Account());
-        model.addAttribute("book", new Book());
         return "admin/authorizeaccount";
     }
 
@@ -81,7 +80,6 @@ public class AccountController {
         List<Role> roles = roleService.getAllRole();
         model.addAttribute("roles", roles);
         model.addAttribute("account", account);
-        model.addAttribute("book", new Book());
         return "admin/addaccount";
     }
 
@@ -99,7 +97,6 @@ public class AccountController {
         }
         model.addAttribute("roles", roles);
         model.addAttribute("accounts", accounts);
-        model.addAttribute("book", new Book());
         return "admin/authorizeaccount";
     }
 
@@ -117,14 +114,12 @@ public class AccountController {
         model.addAttribute("roles", roles);
         model.addAttribute("accounts", accounts);
         model.addAttribute("authorize", new Account());
-        model.addAttribute("book", new Book());
         return "admin/authorizeaccount";
     }
 
     @GetMapping("/favoritebook")
     public String favoriteBook(Principal principal, Model model){
         Account account = accountService.getAccountByTenDangNhap(principal.getName());
-        model.addAttribute("book", new Book());
         model.addAttribute("books", account.getBooks());
         return "user/listfavoritebook";
     }
@@ -141,7 +136,6 @@ public class AccountController {
             model.addAttribute("message", "Bạn đã thêm sách vào thư viện thành công");
 
         }
-            model.addAttribute("book", new Book());
         return "redirect:/";
     }
 

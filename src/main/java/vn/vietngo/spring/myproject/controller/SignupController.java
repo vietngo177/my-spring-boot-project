@@ -11,7 +11,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import vn.vietngo.spring.myproject.entity.Account;
-import vn.vietngo.spring.myproject.entity.Book;
 import vn.vietngo.spring.myproject.entity.Role;
 import vn.vietngo.spring.myproject.service.AccountService;
 
@@ -47,7 +46,6 @@ public class SignupController {
             if(account.getRoles() == null){
                 return "signup";
             }else{
-                model.addAttribute("book", new Book());
                 return "admin/addaccount";
             }
         }
@@ -58,7 +56,6 @@ public class SignupController {
             if(account.getRoles() == null){
                 return "signup";
             }else{
-                model.addAttribute("book", new Book());
                 return "admin/addaccount";
             }
         }
@@ -69,7 +66,6 @@ public class SignupController {
             if(account.getRoles() == null){
                 return "signup";
             }else{
-                model.addAttribute("book", new Book());
                 return "admin/addaccount";
             }
         }
@@ -85,7 +81,6 @@ public class SignupController {
         }else{
             accountService.addAccount(account);
             model.addAttribute("message","Bạn đã đăng ký người dùng mới thành công!");
-            model.addAttribute("book", new Book());
             return "/admin/addaccount";
         }
 

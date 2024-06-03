@@ -1,8 +1,8 @@
 <nav class="navbar bg-info" th:fragment="navbar">
     <div class= "container-fluid" >
         <a class="navbar-brand mb-0 h1" th:href="@{/index}">Trang chủ</a>
-        <form class="d-flex" role="search" th:action="@{/index/find}" th:object="${book}" method="GET">
-            <input class="form-control me-2" type="search" placeholder="Nhập tên sách" aria-label="Search" name="ten" id="ten" th:field="*{tenSach}">
+        <form class="d-flex" role="search" th:action="@{/index/find}" method="GET">
+            <input class="form-control me-2" type="search" placeholder="Nhập tên sách, tên tác giả" aria-label="Search" name="ten" id="ten">
             <button class="btn btn-outline-success me-2" type="submit" style="white-space: nowrap">Tìm kiếm</button>
         </form>
         <div th:unless="${#authorization.expression('hasAnyRole(''USER'', ''ADMIN'')')}">

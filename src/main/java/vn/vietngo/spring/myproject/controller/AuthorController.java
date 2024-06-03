@@ -5,7 +5,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import vn.vietngo.spring.myproject.entity.Author;
-import vn.vietngo.spring.myproject.entity.Book;
 import vn.vietngo.spring.myproject.service.AuthorService;
 
 import java.util.List;
@@ -26,7 +25,6 @@ public class AuthorController {
     @GetMapping("/list")
     public String list(Model model) {
         List<Author> authors = authorService.getAllAuthor();
-        model.addAttribute("book", new Book());
         model.addAttribute("authors", authors);
         return "admin/listauthor";
     }
@@ -35,14 +33,12 @@ public class AuthorController {
     public String createAuthor(Model model) {
         Author author = new Author();
         model.addAttribute("author", author);
-        model.addAttribute("book", new Book());
         return "admin/updateauthor";
     }
 
     @PostMapping("/save")
     public String saveBook(@ModelAttribute Author author, Model model){
         Author savedAuthor = authorService.updateAuthor(author);
-        model.addAttribute("book", new Book());
         model.addAttribute("message", "Bạn đã cập nhật tác giả vào cơ sở dữ liệu thành công");
         return "admin/updateauthor";
     }
@@ -51,7 +47,6 @@ public class AuthorController {
     public String updateAuthor(@RequestParam("id") Long id, Model model) {
         Author author = authorService.getAuthorById(id);
         model.addAttribute("author", author);
-        model.addAttribute("book", new Book());
         return "admin/updateauthor";
     }
 
