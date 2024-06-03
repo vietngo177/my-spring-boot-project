@@ -75,7 +75,7 @@ public class ForgotPasswordController {
     public String processConfirmPassword(HttpServletRequest request, Model model){
         Account account = accountService.getAccountByResetPasswordToken(request.getParameter("token"));
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        account.setMatKhau(request.getParameter("matKhau"));
+        account.setMatKhau(bCryptPasswordEncoder.encode(request.getParameter("matKhau")));
         accountService.updateAccount(account);
         model.addAttribute("message", "Bạn đã đổi mật khẩu thành công");
         return "confirmpassword";
