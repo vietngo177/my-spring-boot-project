@@ -4,30 +4,126 @@
   <meta charset="UTF-8">
   <title>Trang chủ</title>
   <link th:href="@{/css/bootstrap.css}" rel="stylesheet" />
-    <style>
-        .container {
-            display: grid;
-            grid-template-columns: 35% 65%;
-            grid-template-rows: 100px 100px;
-        }
-    </style>
+    <link th:href="@{/css/viewbook_css.css}" rel="stylesheet" />
 </head>
 <body>
 <nav th:replace="~{fragments/navbar :: navbar}"></nav>
 <main>
-    <div class="container mt-4">
-        <img class="mr-3 ml-5" th:src="@{${book.HinhAnhPath}}" width="200px"  alt="Generic placeholder image">
-        <div>
-            <h2 class="mt-0" th:text="${book.getTenSach()}"></h2>
-            <div class="media mt-3">
-                <p><b>Tác giả: </b><span th:text="${book.getAuthor()}">Tác giả</span></p>
-                <p><b>Năm xuất bản: </b><span th:text="${book.getNamXuatBan()}">Năm xuất bản</span></p>
-                <p><b>Thể loại: </b><span th:text="${book.getGenre()}">Thể loại</span></p>
-                <hr>
-                <b>Tóm tắt sách:</b>
-                <p>
-                    <span th:text="${book.getTomTat()}">Tóm tắt</span>
-                </p>
+    <div  class="container mt-4" style="display: flex">
+        <div class="img-control-1">
+            <div class="img-control-2">
+                <img class="img" th:src="@{${book.HinhAnhPath}}"  alt="Generic placeholder image">
+            </div>
+        </div>
+        <div style="width: 400px; margin-right: 3.75rem">
+            <h2 th:text="${book.getTenSach()}"></h2>
+            <small th:text="${book.diemDanhGia == null  ? '0' : #numbers.formatDecimal(book.diemDanhGia, 0, 1)}"></small><small style="color: #ff9e0b">★</small><small class="mx-3" th:text="${book.getSoDanhGia()} + ' đánh giá'"></small>
+            <div><b>Tác giả: </b><span th:text="${book.getAuthor()}">Tác giả</span></div>
+            <div><b>Năm xuất bản: </b><span th:text="${book.getNamXuatBan()}">Năm xuất bản</span></div>
+            <div><b>Thể loại: </b><span th:text="${book.getGenre()}">Thể loại</span></div>
+            <div>
+                <span th:text="${book.getTomTat()}">Giới thiệu nội dung</span>
+            </div>
+            <hr/>
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="comment-tab" data-bs-toggle="tab" data-bs-target="#comment-tab-pane" type="button" role="tab" aria-controls="comment-tab-pane" aria-selected="true">Bình luận</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="review-tab" data-bs-toggle="tab" data-bs-target="#review-tab-pane" type="button" role="tab" aria-controls="review-tab-pane" aria-selected="false">Đánh giá và nhận xét</button>
+                </li>
+            </ul>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="comment-tab-pane" role="tabpanel" aria-labelledby="comment-tab" tabindex="0">
+                    <div sec:authorize="isAuthenticated()" class="my-3">
+                        <form class="form" th:action="@{/comment/add}" method="post">
+                            <input type="hidden" th:value="${book.id}" name="id">
+                            <input type="hidden" th:value="${#temporals.createNow()}" name="time">
+                            <input type="text" class="input" required name="content" placeholder="Viết bình luận..." />
+                            <span class="input-border"></span>
+                        </form>
+                    </div>
+
+                    <div th:each="i : ${#numbers.sequence(comments.size() - 1, 0, -1)}" th:with="comment=${comments[i]}">
+                        <div class="mb-2 p-1">
+                            <b th:text="${comment.account.hoVaTen}"></b>
+                            <small th:text="${comment.time}" class="float-end"></small>
+                            <div th:text="${comment.content}"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade mx-2" id="review-tab-pane" role="tabpanel" aria-labelledby="review-tab" tabindex="0">
+                    <h5 class="mt-2">Tổng quan</h5>
+                    <h3 th:text="${book.diemDanhGia == null  ? '0' : #numbers.formatDecimal(book.diemDanhGia, 0, 1)}" class="d-inline"></h3><h3 style="color: #ff9e0b" class="d-inline">  ★</h3>
+                    <small class="d-block" th:text="'(' + ${book.soDanhGia == null  ? '0' : book.soDanhGia} + ' đánh giá)'"></small>
+                    <div class="mt-2" th:each="i : ${#numbers.sequence(1, 5)}">
+                        <span th:each="n : ${#numbers.sequence(i, 5)}" style="font-size: 1.5rem;color: #ff9e0b">★</span><!--
+                        --><span th:each="n : ${#numbers.sequence(1, i - 1)}" th:unless="${i == 1}" style="font-size: 1.5rem;color: #dddddd">★</span>
+                        <span class="d-inline-block mx-2" style="width: 240px">
+                            <span class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+                                <span class="progress-bar" th:style="'width:' + ( ${book.soDanhGia == null  ? '0' : book.soDanhGia} == 0  ? '0' : (${listrate.get(6 - i) * 1.0} / ${book.soDanhGia}) * 100.0 ) + '%;'" ></span>
+                            </span>
+                        </span>
+                        <span class="float-end"  style="font-size: 1.5rem" th:text="${listrate.get(6 - i)}"></span>
+                    </div>
+                    <div sec:authorize="isAuthenticated()" class="my-3">
+                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                            Viết đánh giá
+                        </button>
+                        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Đánh giá và nhận xét</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <form class="form" th:action="@{/review/add}" method="post">
+                                    <div class="modal-body">
+                                            <input type="hidden" th:value="${book.id}" name="id">
+                                            <input type="hidden" th:value="${#temporals.createNow()}" name="time">
+                                            <div class="rating p-1">
+                                                <div>Đánh giá</div>
+                                                <input value="5" name="rate" id="star5" type="radio">
+                                                <label for="star5"></label>
+                                                <input value="4" name="rate" id="star4" type="radio">
+                                                <label for="star4"></label>
+                                                <input value="3" name="rate" id="star3" type="radio" checked="">
+                                                <label for="star3"></label>
+                                                <input value="2" name="rate" id="star2" type="radio">
+                                                <label for="star2"></label>
+                                                <input value="1" name="rate" id="star1" type="radio">
+                                                <label for="star1"></label>
+                                            </div>
+                                            <div class="review p-1 mt-2">
+                                                <div>Nhận xét</div>
+                                                <textarea class="mt-2" rows="3" cols="60" required name="content" placeholder="Viết nhận xét..."></textarea>
+                                            </div>
+                                            <span class="input-border"></span>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-primary btn-sm">Gửi nhận xét</button>
+                                    </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div th:each="i : ${#numbers.sequence(reviews.size() - 1, 0, -1)}" th:with="review=${reviews[i]}">
+                        <div class="mb-2 p-1">
+                            <div>
+                                <b th:text="${review.account.hoVaTen}"></b>
+                                <small th:text="${review.time}" class="float-end"></small>
+                            </div>
+                            <div class="d-flex">
+                                <span th:text="${review.content}" class="d-inline-block w-75" ></span>
+                                <span class="d-flex justify-content-end" style="min-width: 120px; align-items: center">
+                                    <span th:each="i : ${#numbers.sequence(1, review.getRate())}" style="color:#ff9e0b">★</span><!--
+                                    --><span th:each="i : ${#numbers.sequence(review.getRate() + 1, 5)}" th:unless="${review.getRate() == 5}" style="color:#dddddd">★</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

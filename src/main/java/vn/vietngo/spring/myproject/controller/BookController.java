@@ -6,12 +6,8 @@ import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import vn.vietngo.spring.myproject.entity.Author;
-import vn.vietngo.spring.myproject.entity.Book;
-import vn.vietngo.spring.myproject.entity.Genre;
-import vn.vietngo.spring.myproject.service.AuthorService;
-import vn.vietngo.spring.myproject.service.BookService;
-import vn.vietngo.spring.myproject.service.GenreService;
+import vn.vietngo.spring.myproject.entity.*;
+import vn.vietngo.spring.myproject.service.*;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,6 +15,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -28,15 +26,19 @@ public class BookController {
     private BookService bookService;
     private AuthorService authorService;
     private GenreService genreService;
+    private CommentService commentService;
+    private ReviewService reviewService;
 
     public BookController() {
     }
 
     @Autowired
-    public BookController(BookService bookService, AuthorService authorService, GenreService genreService) {
+    public BookController(ReviewService reviewService, BookService bookService, AuthorService authorService, GenreService genreService, CommentService commentService) {
         this.bookService = bookService;
         this.authorService = authorService;
         this.genreService = genreService;
+        this.commentService = commentService;
+        this.reviewService = reviewService;
     }
 
     @GetMapping("")
@@ -45,7 +47,12 @@ public class BookController {
         if(book == null) {
             return "index";
         }
+        List<Comment> comments = commentService.getCommentsByBook(id);
+        List<Review> reviews = reviewService.getReviewsByBook(id);
+        model.addAttribute("comments", comments);
+        model.addAttribute("reviews", reviews);
         model.addAttribute("book", book);
+        model.addAttribute("listrate", change(reviews));
         return "viewbook";
     }
 
@@ -119,5 +126,15 @@ public class BookController {
         return "redirect:/book/list";
     }
 
-
+    private ArrayList<Integer> change(List<Review> listReview){
+        Integer[] array = {0,0,0,0,0,0};
+        ArrayList<Integer> listRate = new ArrayList<>(Arrays.asList(array));
+        int rate = 0;
+        for(Review i : listReview){
+            rate = i.getRate();
+            listRate.set(rate, listRate.get(rate) + 1);
+        }
+        System.out.println(listRate);
+        return listRate;
+    }
 }

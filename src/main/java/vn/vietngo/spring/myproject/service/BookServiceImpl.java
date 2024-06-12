@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import vn.vietngo.spring.myproject.repository.BookRepository;
 import vn.vietngo.spring.myproject.entity.Book;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -32,7 +33,9 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Book getBookById(Long id) {
-        return bookRepository.getReferenceById(id);
+        Book book = bookRepository.getReferenceById(id);
+        if(book.getSoDanhGia() == null) book.setSoDanhGia(0);
+        return book;
     }
 
     @Override

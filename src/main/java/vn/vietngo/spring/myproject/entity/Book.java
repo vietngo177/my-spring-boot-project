@@ -2,6 +2,7 @@ package vn.vietngo.spring.myproject.entity;
 
 import jakarta.persistence.*;
 import java.time.Year;
+import java.util.ArrayList;
 
 @Entity
 @Table(name="books")
@@ -19,6 +20,9 @@ public class Book {
 
     @Column(name="diemdanhgia")
     private Float diemDanhGia;
+
+    @Column(name="sodanhgia")
+    private Integer soDanhGia;
 
     @Column(name="hinhanh")
     private String hinhAnh;
@@ -107,6 +111,14 @@ public class Book {
 
     public void setGenre(Genre genre) {
         this.genre = genre;
+    }
+
+    public Integer getSoDanhGia() {
+        return soDanhGia;
+    }
+
+    public void setSoDanhGia(Integer soDanhGia) {
+        this.soDanhGia = soDanhGia;
     }
 
     @Override

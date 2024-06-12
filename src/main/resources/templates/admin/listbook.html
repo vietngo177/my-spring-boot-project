@@ -24,6 +24,7 @@
             <td>Năm x.bản</td>
             <td>Tác giả</td>
             <td>Thể loại</td>
+            <td>Điểm</td>
             <td width="15%">Cập nhật</td>
         </tr>
         </thead>
@@ -35,6 +36,7 @@
             <td th:text="${book1.namXuatBan}"></td>
             <td th:text="${book1.author}"></td>
             <td th:text="${book1.genre}"></td>
+            <td th:text="${#numbers.formatDecimal(book1.diemDanhGia, 0, 1)}"></td>
             <td>
                 <a th:href="@{/book/update(id=${book1.id})}" class="btn btn-primary btn-sm">Cập nhật</a>
                 <a th:href="@{/book/delete(id=${book1.id})}" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn xóa sách khỏi thư viện?')">Xóa</a>

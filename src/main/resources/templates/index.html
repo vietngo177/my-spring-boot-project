@@ -13,7 +13,7 @@
                 <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 g-3">
                     <div class="col" th:each="book : ${books}">
                         <div class="card shadow-sm">
-                            <img alt="" class="bd-placeholder-img card-img-top" th:src="@{${book.HinhAnhPath}}" height="300" xmlns="http://www.w3.org/2000/svg" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
+                            <img alt="" class="bd-placeholder-img card-img-top" th:src="@{${book.HinhAnhPath}}" height="275" xmlns="http://www.w3.org/2000/svg" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
                             <div class="card-body">
                                 <h5 th:text="${book.tenSach}"></h5>
                                 <div class="text-end"><small th:text="${book.author.hoVaTen}"></small></div>
@@ -21,12 +21,22 @@
                                 <p th:text="${book.tomTat}"></p>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="btn-group">
-                                        <a th:href="@{/book(id=${book.id})}" type="button" class="btn btn-sm btn-outline-secondary">
+                                        <a th:href="@{/book(id=${book.id})}" type="button" class="btn btn-sm btn-outline-secondary d-inline">
                                             <span class="button-icon"><i class="fa-solid fa-eye"></i></span>
                                         </a>
-                                        <a th:href="@{/account/favoritebook/add(id=${book.id})}" type="button" class="btn btn-sm btn-outline-secondary mybutton" onclick="return alert('Bạn đã thêm sách vào thư viện thành công!')">
-                                            <span class="button-icon"><i class="fa-regular fa-heart"></i></span>
-                                        </a>
+                                        <div th:if="${#authorization.expression('hasAnyRole(''USER'', ''ADMIN'')')}">
+                                            <a th:href="@{/account/favoritebook/add(id=${book.id})}" type="button" class="btn btn-sm btn-outline-secondary" onclick="return alert('Bạn đã thêm sách vào thư viện thành công!')">
+                                                <span class="button-icon"><i class="fa-regular fa-heart"></i></span>
+                                            </a>
+                                        </div>
+                                        <div th:unless="${#authorization.expression('hasAnyRole(''USER'', ''ADMIN'')')}">
+                                            <a href="#" type="button" class="btn btn-sm btn-outline-secondary" onclick="return alert('Bạn cần đăng nhập để thêm sách vào tủ sách yêu thích!')">
+                                                <span class="button-icon"><i class="fa-regular fa-heart"></i></span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="d-inline float-end" >
+                                        <small th:text="${book.diemDanhGia == null  ? '0' : #numbers.formatDecimal(book.diemDanhGia, 0, 1)}"></small><small style="color: #ff9e0b">★</small><small th:text="'(' + ${book.soDanhGia == null  ? '0' : book.soDanhGia} + ' đánh giá)'"></small>
                                     </div>
                                 </div>
                             </div>
